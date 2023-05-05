@@ -1,0 +1,23 @@
+
+.header {
+
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid green;
+
+    ul {
+        display: flex;
+        justify-content: space-around;
+        list-style-type: none;
+        margin-right: 2rem;
+        font-size: x-large;
+        font-weight: 600;
+        > li {
+            padding: 5px;
+            >a {
+                text-decoration: none;
+            }
+        }
+    }
+}
