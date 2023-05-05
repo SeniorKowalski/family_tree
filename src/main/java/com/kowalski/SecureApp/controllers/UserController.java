@@ -2,7 +2,8 @@ package com.kowalski.SecureApp.controllers;
 
 import com.kowalski.SecureApp.models.User;
 import com.kowalski.SecureApp.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,11 +11,11 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
+@Slf4j
 @RequestMapping("/api/users")
 public class UserController {
-
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
