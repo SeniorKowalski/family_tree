@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import styles from './header.module.scss';
 
 const Header = () => {
@@ -7,10 +9,10 @@ const Header = () => {
             <nav>
                 <ul>
                     <li>
-                        <a href='/'>Дерево</a>
+                        <Link to='/'>Дерево</Link>
                     </li>
                     <li>
-                        <a href='/'>О проекте</a>
+                        <Link to='/about'>О проекте</Link>
                     </li>
                 </ul>
             </nav>

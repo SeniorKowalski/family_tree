@@ -1,12 +1,16 @@
 import Layout from './layout/Layout';
-import Home from './pages/home/Home';
+import routes from './routes';
+import { useRoutes } from 'react-router-dom';
+import withRouter from './hoc/withRouter';
 
-const App = () => (
-    <div className='App'>
-        <Layout>
-            <Home />
-        </Layout>
-    </div>
-);
+const App = () => {
+    const elements = useRoutes(routes);
+    return (
+        <div className='App'>
+            <Layout>{elements}</Layout>
+        </div>
+    );
+};
 
-export default App;
+const AppWithRoutes = withRouter(App);
+export default AppWithRoutes;
