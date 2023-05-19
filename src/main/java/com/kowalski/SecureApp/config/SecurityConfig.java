@@ -1,23 +1,45 @@
 package com.kowalski.SecureApp.config;
 
-import com.kowalski.SecureApp.security.AuthProviderImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import com.kowalski.SecureApp.models.Role;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.Map;
 
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    private final AuthProviderImpl authProvider;
-
-    @Autowired
-    public SecurityConfig(AuthProviderImpl authProvider) {
-        this.authProvider = authProvider;
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf().disable()
+                .cors().disable()
+                .authorizeHttpRequests(auth ->
+                        auth
+                                .requestMatchers("/**").authenticated()
+                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/sign-up").permitAll()
+                                .requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .formLogin()
+                .and()
+                .logout()
+                .and()
+                .build();
     }
 
-    protected void configure(AuthenticationManagerBuilder managerBuilder){
-        managerBuilder.authenticationProvider(authProvider);
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new DelegatingPasswordEncoder("bcrypt",
+                Map.of("bcrypt", new BCryptPasswordEncoder(),
+                        "noop", NoOpPasswordEncoder.getInstance()) // TODO: REPLACE WITH BCRYPT WHEN GOING TO PROD
+        );
     }
-
 }

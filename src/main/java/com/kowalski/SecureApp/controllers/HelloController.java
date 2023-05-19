@@ -1,24 +1,21 @@
 package com.kowalski.SecureApp.controllers;
 
-import com.kowalski.SecureApp.security.PersonDetails;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
+@Slf4j
 public class HelloController {
 
     @GetMapping("/hello")
-    public String sayHello(){
-        return "hello";
+    public ResponseEntity<String> sayHello(){
+        return ResponseEntity.ok("Hello");
     }
 
     @GetMapping("/userInfo")
     public String showUserInfo(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
-        System.out.println(personDetails.getPerson());
         return "hello";
     }
 }
